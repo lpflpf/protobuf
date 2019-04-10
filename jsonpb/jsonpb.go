@@ -522,7 +522,9 @@ func (m *Marshaler) marshalValue(out *errWriter, prop *proto.Properties, v refle
 	}
 
 	if v.Kind() == reflect.Slice && v.Type().Elem().Kind() == reflect.Uint8 {
+		out.write(`"`)
 		out.write(string(v.Bytes()))
+		out.write(`"`)
 		return out.err
 	}
 
