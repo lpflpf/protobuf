@@ -1012,6 +1012,7 @@ func (u *Unmarshaler) unmarshalValue(target reflect.Value, inputValue json.RawMe
 
 	if targetType.Kind() == reflect.Slice && targetType.Elem().Kind() == reflect.Uint8 {
 		target.SetString(string(inputValue))
+		return nil
 	}
 
 	// Handle maps (whose keys are always strings)
