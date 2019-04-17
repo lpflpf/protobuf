@@ -521,6 +521,11 @@ func (m *Marshaler) marshalValue(out *errWriter, prop *proto.Properties, v refle
 		return out.err
 	}
 
+	if v.Kind() == reflect.Slice && v.Type().Elem().Kind() == reflect.Uint8 {
+		tmp := string(v.Bytes())
+		v = reflect.ValueOf(tmp)
+	}
+
 	// Handle well-known types.
 	// Most are handled up in marshalObject (because 99% are messages).
 	if wkt, ok := v.Interface().(wkt); ok {
@@ -1011,7 +1016,9 @@ func (u *Unmarshaler) unmarshalValue(target reflect.Value, inputValue json.RawMe
 	}
 
 	if targetType.Kind() == reflect.Slice && targetType.Elem().Kind() == reflect.Uint8 {
-		target.SetString(string(inputValue))
+		var tmpString = ""
+		_ = json.Unmarshal(inputValue, &tmpString)
+		target.SetBytes([]byte(tmpString))
 		return nil
 	}
 
