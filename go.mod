@@ -1,1 +1,3 @@
-module github.com/golang/protobuf
+module github.com/lpflpf/protobuf
+
+go 1.12
